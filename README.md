@@ -33,9 +33,6 @@
      * [Documentation for default ingress nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/)
      * [Beispiel mit Hostnamen](/kubectl-examples/04-ingress-nginx-with-hostnames.md)
 
-  1. Kubernetes Secrets und Encrypting von z.B. Credentials 
-     * [Sealed Secrets - bitnami](/kubernetes/credentials/sealed-secrets.md) 
-
   1. Kubernetes Praxis Scaling/Rolling Updates/Wartung 
      * Rolling Updates (Devs/Ops) 
      * Scaling von Deployments (Devs/Ops) 
