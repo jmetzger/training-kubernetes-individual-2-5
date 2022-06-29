@@ -1,6 +1,8 @@
 # Replicaset
 
 ```
+# cd; mkdir -p manifests/rs; cd manifests/rs
+# nano 01-rs.yml 
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
