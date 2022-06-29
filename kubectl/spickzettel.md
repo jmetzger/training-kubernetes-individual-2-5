@@ -8,6 +8,13 @@ kubectl create ns namespace1
 kubectl config set-context --current --namespace=namespace1
 ```
 
+## Hilfe zu einem bestimmten Befehl 
+
+```
+# z.B. Hilfe zu config 
+kubectl help config 
+
+```
 
 ## Allgemein 
 
