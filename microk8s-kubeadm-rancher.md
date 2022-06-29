@@ -17,8 +17,8 @@
     * Dieses Features, die im Hintergrund manifeste ausführen, können so einfach konfiguriert werden 
   * Es läßt sich sehr einfach ein Cluster aufbauen (3 Server hochziehen mit microk8s und verheiraten (node2, node3) 
 
-## Rancher 
+## Rancher / Rancher Desktop
 
-  * Von der 3 Varianten das komfortabelste Tool
+  * Von den 3 Varianten das komfortabelste Tool
   * Bietet einen gui um ein Cluster einzurichten 
 
