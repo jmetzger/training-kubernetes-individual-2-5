@@ -26,9 +26,9 @@
     * Kubernetes aware backup (solution), e.g. kasten.io 
   * Havarie (wie setze ich das ganze wieder auf - worst case)   
 
-## Wo muss mich strecken als Admin 
+## Wo muss ich mich strecken als Admin 
 
-  * Aufbau von Vertrauen auf Kubernetes (Vertrauen darauf, dass Kubernetes das in meinem Sinne macht)
+  * Aufbau von Vertrauen in Kubernetes (Vertrauen darauf, dass Kubernetes das in meinem Sinne macht)
 
 ## Sicherheitsaspekt (Server vs. Kubernetes) 
 
