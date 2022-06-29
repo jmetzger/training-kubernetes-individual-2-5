@@ -1,6 +1,8 @@
 # Example Service 
 
 ```
+# cd; mkdir -p manifests/service; cd manifests/service 
+# nano 01-nginx.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -33,13 +35,14 @@ spec:
   - port: 80
     protocol: TCP
   selector:
-    run: my-nginx
-        
-        
-
-        
-        
+    run: my-nginx               
 ```        
+
+```
+kubectl apply -f . 
+kubectl get deploy; kubectl get po -o wide; kubectl get service -o wide 
+```
+
 
 ## Ref.
 
