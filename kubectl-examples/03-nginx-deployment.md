@@ -2,7 +2,8 @@
 
 ```
 
-# vi nginx-deployment.yml 
+# cd; mkdir -p manifests/deploy; cd manifests/deploy
+# nano nginx-deployment.yml 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,4 +28,5 @@ spec:
 
 ```
 kubectl apply -f nginx-deployment.yml 
+kubectl get deploy; kubectl get rs; kubectl get po
 ```
