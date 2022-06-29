@@ -114,8 +114,15 @@ kubectl describe pod nginx
 # Pod löschen 
 kubectl delete pod nginx 
 
+
+## In den Container / Pod reingehen 
+
+```
+
 # Kommando in pod ausführen 
 kubectl exec -it nginx -- bash 
+# bei deployment hineinwechseln in einen beliebigen pod 
+kubectl exec -it deploy/nginx-deployment -- bash 
 
 ```
 
