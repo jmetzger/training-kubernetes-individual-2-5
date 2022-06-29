@@ -16,6 +16,15 @@ kubectl help config
 
 ```
 
+## Hilfe zu Objekten 
+
+```
+# Hilfe zu object und eigenschaften bekommen
+kubectl explain pod 
+kubectl explain pod.metadata
+kubectl explain pod.metadata.name 
+```
+
 ## Allgemein 
 
 ```
@@ -26,10 +35,7 @@ kubectl cluster-info
 kubectl api-resources 
 kubectl api-resources | grep namespaces 
 
-# Hilfe zu object und eigenschaften bekommen
-kubectl explain pod 
-kubectl explain pod.metadata
-kubectl explain pod.metadata.name 
+
 
 ```
 
