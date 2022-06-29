@@ -3,6 +3,8 @@
 ## Walkthrough 
 
 ```
+# cd; mkdir manifests; cd manifests 
+# mkdir web; cd web; 
 # vi nginx-static.yml 
 
 apiVersion: v1
