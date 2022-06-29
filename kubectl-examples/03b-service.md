@@ -28,7 +28,7 @@ metadata:
   labels:
     run: svc-my-nginx
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 80
     protocol: TCP
