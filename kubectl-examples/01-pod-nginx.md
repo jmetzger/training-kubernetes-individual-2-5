@@ -23,6 +23,9 @@ spec:
 ```
 kubectl apply -f nginx-static.yml 
 kubectl describe pod nginx-static-web 
+```
+
+```
 # show config 
 kubectl get pod/nginx-static-web -o yaml
 kubectl get pod/nginx-static-web -o wide 
