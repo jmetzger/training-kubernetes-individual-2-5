@@ -24,4 +24,10 @@ spec:
           ports:
              - containerPort: 80
             
- ```
+```
+
+```
+kubectl apply -f .
+kubectl get rs -o wide
+kubectl get po -o wide 
+```
