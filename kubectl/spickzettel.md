@@ -1,5 +1,14 @@
 # Wichtige kubectl kommandos 
 
+## Per Default mit namespace namespace1 arbeiten 
+
+```
+# namespace muss vorhanden sein, evtl anlegen 
+kubectl create ns namespace1 
+kubectl config set-context --current --namespace=namespace1
+```
+
+
 ## Allgemein 
 
 ```
