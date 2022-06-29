@@ -86,6 +86,7 @@
      * [bash-completion](/kubectl/bash-completion.md) 
      * [kubectl spickzettel](/kubectl/spickzettel.md)
      * [Alte manifests migrieren](/kubectl/convert-plugin.md)
+     * [Pod - Verbindung debuggen](/tipps-tricks/busybox-zum-debuggen.md)
     
   1. Fragen 
      * [Q and A](/q-and-a.md)
