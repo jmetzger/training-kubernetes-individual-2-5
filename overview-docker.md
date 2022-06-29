@@ -46,8 +46,10 @@ Container virtualisieren Betriebssystem
 
 ## Einfaches Beispiel eines Dockerfiles
 
+```
 FROM nginx:latest
 COPY html /usr/share/nginx/html
+```
 
 ## Komplexeres Beispiel eines Dockerfiles 
 
