@@ -36,7 +36,7 @@ umount /mnt/nfs
 ## Setup PersistentVolume and PersistentVolumeClaim in cluster
 
 ```
-# mkdir -p nfs; cd nfs
+# cd; mkdir -p manifests/nfs; cd manifests/nfs
 # vi 01-pv.yml 
 # Important user  
 apiVersion: v1
