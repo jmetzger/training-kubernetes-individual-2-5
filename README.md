@@ -88,6 +88,7 @@
      * [kubectl spickzettel](/kubectl/spickzettel.md)
      * [Alte manifests migrieren](/kubectl/convert-plugin.md)
      * [Pod - Verbindung debuggen](/tipps-tricks/busybox-zum-debuggen.md)
+     * [Übung mit sealed-secrets](/kubernetes/secrets/sealed-secrets.md)
     
   1. Fragen 
      * [Q and A](/q-and-a.md)
