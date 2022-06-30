@@ -43,9 +43,9 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   # any PV name
-  name: pv-nfs-tln1
+  name: pv-nfs-tln<tln>
   labels:
-    volume: nfs-data-volume-tln1
+    volume: nfs-data-volume-tln<tln>
 spec:
   capacity:
     # storage size
@@ -58,8 +58,8 @@ spec:
     Retain
   nfs:
     # NFS server's definition
-    path: /var/nfs/tln1/nginx
-    server: 192.168.56.106
+    path: /var/nfs/tln<tln>/nginx
+    server: 10.135.0.5
     readOnly: false
   storageClassName: ""
 
