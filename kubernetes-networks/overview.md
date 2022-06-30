@@ -14,7 +14,8 @@
 
   * Flanel
   * Canal 
-  * Calico 
+  * Calico
+  * Cilium 
   
 ## Flannel
 
@@ -26,7 +27,7 @@
 ### Vorteile 
 
   * Guter einfacher Einstieg 
-  * redziert auf eine Binary flanneld 
+  * reduziert auf eine Binary flanneld 
 
 ### Nachteile 
 
