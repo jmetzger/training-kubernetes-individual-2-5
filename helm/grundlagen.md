@@ -10,7 +10,7 @@ https://artifacthub.io/
 
 ```
 Chart - beeinhaltet Beschreibung und Komponenten 
-tar.gz - Format 
+tar.gz - Format / oder Verzeichnis 
 
 Wenn wir ein Chart ausführen wird eine Release erstellen 
 (parallel: image -> container, analog: chart -> release 
