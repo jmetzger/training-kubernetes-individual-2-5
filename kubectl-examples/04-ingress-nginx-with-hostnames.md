@@ -26,7 +26,7 @@ spec:
     - name: apple-app
       image: hashicorp/http-echo
       args:
-        - "-text=apple-tln12"
+        - "-text=apple-tln<tln>"
 ---
 
 kind: Service
@@ -60,7 +60,7 @@ spec:
     - name: banana-app
       image: hashicorp/http-echo
       args:
-        - "-text=banana-tln12"
+        - "-text=banana-tln<tln>"
 
 ---
 
@@ -91,7 +91,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "app12.lab.t3isp.de"
+  - host: "app<tln>.lab3.t3isp.de"
     http:
       paths:
         - path: /apple
@@ -142,7 +142,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "app12.lab.t3isp.de"
+  - host: "app<tln>.lab3.t3isp.de"
     http:
       paths:
         - path: /apple
