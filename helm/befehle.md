@@ -21,6 +21,7 @@ helm history my-mysql
 # Release installieren - my-mysql ist hier hier release-name 
 helm install my-mysql bitnami-mysql 
 helm install [name] [chart] --dry-run --debug -f <your_values_file> # dry run 
+helm uninstall my-mysql 
 # + verwendete values anzeigen 
 helm get values 
 
