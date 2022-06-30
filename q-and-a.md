@@ -39,4 +39,11 @@ spec:
   controller: k8s.io/ingress-nginx
 ```
 
+## Wie kann ich bei docker einloggen mit kubernetes bzw. ...
+
+```
+# einen pod von einem image aus einer registry mit credentials ziehen.
+# klassische / unsichere Lösung / weil credentials in manifest gespeichert werden (unverschlüsselt) 
+https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+```
 
