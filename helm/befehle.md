@@ -33,5 +33,7 @@ helm template my-mysql bitnami/mysql > test.yml 
 # zur Validierung schicken
 helm install --dry-run my-mysql bitnami/mysql 
 
+helm show values bitnami-mysql
+helm get values my-mysql
 
 ```
