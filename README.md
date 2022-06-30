@@ -56,6 +56,7 @@
      * [Warum ? (Dev/Ops)](helm/warum.md)
      * [Grundlagen / Aufbau / Verwendung (Dev/Ops)](/helm/grundlagen.md)
      * [Praktisches Beispiel bitnami/mysql (Dev/Ops)](/helm/example.md) 
+     * [Wichtige Befehle](/helm/befehle.md)
 
   1. Kubernetes Rechteverwaltung (RBAC) 
      * Warum ? (Ops)
