@@ -153,13 +153,17 @@ spec:
 
 ```
 kubectl apply -f 04-service.yml 
+```
 
+```
 # connect to the container and add index.html - data 
 kubectl exec -it deploy/nginx-deployment -- bash 
 # in container
 echo "hello dear friend" > /usr/share/nginx/html/index.html 
 exit 
+```
 
+```
 # now try to connect 
 kubectl get svc 
 
