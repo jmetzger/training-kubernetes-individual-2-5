@@ -23,9 +23,7 @@ usw. ;o)
 ## Schritt 1: Nutzer-Account auf Server anlegen / in Client 
 
 ```
-cd 
-mkdir -p manifests/rbac
-cd manifests/rbac
+cd; mkdir -p manifests/rbac; cd manifests/rbac
 ```
 
 ###  Mini-Schritt 1: Definition für Nutzer 
