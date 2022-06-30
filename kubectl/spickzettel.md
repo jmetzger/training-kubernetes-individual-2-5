@@ -34,8 +34,8 @@ kubectl cluster-info
 # Welche api-resources gibt es ?
 kubectl api-resources 
 kubectl api-resources | grep namespaces 
-
-
+# Gross- und Kleinschreibung egal 
+kubectl api-resources | grep -i ingress
 
 ```
 
