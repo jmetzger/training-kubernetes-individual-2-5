@@ -1,4 +1,4 @@
-# Questions and Answerts 
+# Questions and Answers 
 
 ## Wieviele Replicaset beim Deployment zurückbehalt / Löschen von Replicaset 
 
