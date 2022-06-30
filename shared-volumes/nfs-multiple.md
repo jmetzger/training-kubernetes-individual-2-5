@@ -122,7 +122,7 @@ spec:
       volumes:
       - name: nfsvol
         persistentVolumeClaim:
-          claimName: pv-nfs-claim-tln1
+          claimName: pv-nfs-claim-tln<tln>
 
 
 ```
