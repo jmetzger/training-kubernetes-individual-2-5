@@ -16,7 +16,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm search repo bitnami
 helm repo update 
 helm pull bitnami/mysql
-tar xzvf mysql-*.tar.gz 
+tar xzvf mysql-*.tgz 
 
 ```
 
