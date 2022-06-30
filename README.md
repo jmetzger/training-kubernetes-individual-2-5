@@ -28,7 +28,7 @@
      * Services (Devs/Ops)
      * [kubectl/manifest/service](/kubectl-examples/03b-service.md)
      * DaemonSets (Devs/Ops)
-     * IngressController (Devs/Ops)
+     * [IngressController (Devs/Ops)](/digitalocean/ingress-controller-aufsetzen-mit-helm.md)
      * [Hintergrund Ingress](/kubernetes/ingress.md) 
      * [Documentation for default ingress nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/)
      * [Beispiel mit Hostnamen](/kubectl-examples/04-ingress-nginx-with-hostnames.md)
