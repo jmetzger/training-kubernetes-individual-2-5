@@ -24,3 +24,19 @@ Labels can be used to select objects and to find collections of objects that sat
   * https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
   * https://kubernetes.io/docs/reference/labels-annotations-taints/
 
+## Wie kann ich die Default Class für Ingress bzw. IngressClass setzten 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+  name: nginx-example
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/ingress-nginx
+```
+
+
