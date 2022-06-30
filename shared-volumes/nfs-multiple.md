@@ -1,6 +1,6 @@
 # Volumes with NFS (Share per Student)
 
-## Create new server and install nfs-server
+## Create new server and install nfs-server (if not existent)
 
 ```
 # on Ubuntu 20.04LTS
@@ -19,7 +19,7 @@ vi /etc/exports
 exportfs -av 
 ```
 
-## On all clients 
+## On all clients (only on self-hosted kubernetes)
 
 ```
 ### Please do this on all servers 
