@@ -17,7 +17,7 @@ wget -q nginx -O -
 ```
 # Schritt 2: Policy festlegen, dass kein Ingress-Traffic erlaubt
 # in diesem namespace: policy-demo 
-# mkdir network; cd network 
+# cd; mkdir -p manifests/network; cd manifests/network 
 # vi 01-policy.yml
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
