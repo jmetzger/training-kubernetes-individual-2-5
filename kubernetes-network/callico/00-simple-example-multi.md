@@ -22,7 +22,7 @@ wget -q nginx -O -
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: default-deny
+  name: a-simple-policy
   namespace: policy-demo-<tln>
 spec:
   podSelector:
@@ -72,7 +72,7 @@ kubectl apply -f 02-allow.yml
 ```
 # lassen einen 2. pod laufen mit dem auf den nginx zugreifen 
 # pod hat durch run -> access automatisch das label run:access zugewiesen 
-kubectl run --namespace=policy-demo<tln> access --rm -ti --image busybox /bin/sh
+kubectl run --namespace=policy-demo-<tln> access --rm -ti --image busybox /bin/sh
 ```
 
 ```
@@ -91,7 +91,7 @@ wget -q nginx -O -
 
 ```
 
-kubectl delete ns policy-demo 
+kubectl delete ns policy-demo-<tln> 
 
 ```
 
