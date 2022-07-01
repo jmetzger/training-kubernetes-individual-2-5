@@ -86,10 +86,42 @@ kubectl -n monitoring get all
 
 ```
 
+## Access Prometheus 
+
 ```
-# Access Grafana 
+# What Service is it ? 
+kubectl -n monitoring get svc prometheus-kube-prometheus-prometheus 
+
+# Prometheus: (Version kubectl on your client) 
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
+
+# in our case kubectl is on remote client, so we need open a tunnel 
+# Session 1:
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
+
+# Session 2:
+# Service Listens on 8000
+ssh -L 9090:localhost:9090 tln<tln>@<ip-client>
+
+# in browser
+http://localhost:9090
+
+
+```
+
+## Let us look into prometheus 
+
+
+
+
+
+## Access Grafana 
+
+```
+
 
 # Grafana: (Version kubectl on your client) 
+kubectl port-forward -n monitoring svc/prometheus-grafana 8000:80
 
 # in our case kubectl is on remote client, so we need open a tunnel 
 # Session 1:
