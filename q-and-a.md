@@ -47,3 +47,12 @@ spec:
 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 ```
 
+## Sind Änderungen in einer eingehängt config-map sofort im pod sichtbar ? 
+
+```
+Nein 
+```
+
+```
+Lösung als Workaround: https://github.com/stakater/Reloader
+```
