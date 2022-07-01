@@ -94,6 +94,7 @@
      * [Alte manifests migrieren](/kubectl/convert-plugin.md)
      * [Pod - Verbindung debuggen](/tipps-tricks/busybox-zum-debuggen.md)
      * [Übung mit sealed-secrets](/kubernetes/secrets/sealed-secrets.md)
+     * [Config für nginx mit configmap einhängen](/tipps-tricks/nginx-configmap-nginx-conf.md)
     
   1. Fragen 
      * [Q and A](/q-and-a.md)
