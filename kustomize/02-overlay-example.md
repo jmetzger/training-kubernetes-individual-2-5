@@ -19,7 +19,7 @@
 #       - kustomization.yml 
 #.    L prod 
 #.      - kustomization.yml 
-cd; mkdir -p manifests/kustomize-example1/base; mkdir -p manifests/kustomize-example1/overlays/prod; cd kustomize-example1 
+cd; mkdir -p manifests/kustomize-example1/base; mkdir -p manifests/kustomize-example1/overlays/prod; cd manifests/kustomize-example1 
 
 ```
 
