@@ -16,7 +16,7 @@
      * [Vorstellung Management - Tools zum Aufsetzen eines Cluster (microk8s,kubeadm,Rancher) (Ops)](#vorstellung-management---tools-zum-aufsetzen-eines-cluster-microk8skubeadmrancher-ops)
 
   1. Kubernetes Praxis API-Objekte 
-     * [Das Tool kubectl (Devs/Ops)](#das-tool-kubectl-devsops)
+     * [Das Tool kubectl (Devs/Ops) - Spickzettel](#das-tool-kubectl-devsops---spickzettel)
      * [kubectl example with run](#kubectl-example-with-run)
      * Arbeiten mit manifests (Devs/Ops)
      * Pods (Devs/Ops)
@@ -28,7 +28,7 @@
      * Services (Devs/Ops)
      * [kubectl/manifest/service](#kubectlmanifestservice)
      * DaemonSets (Devs/Ops)
-     * IngressController (Devs/Ops)
+     * [IngressController (Devs/Ops)](#ingresscontroller-devsops)
      * [Hintergrund Ingress](#hintergrund-ingress)
      * [Documentation for default ingress nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/)
      * [Beispiel mit Hostnamen](#beispiel-mit-hostnamen)
@@ -54,8 +54,9 @@
 
   1. Kubernetes Paketmanagement (Helm) 
      * [Warum ? (Dev/Ops)](#warum--devops)
-     * Grundlagen / Aufbau / Verwendung (Dev/Ops)
+     * [Grundlagen / Aufbau / Verwendung (Dev/Ops)](#grundlagen--aufbau--verwendung-devops)
      * [Praktisches Beispiel bitnami/mysql (Dev/Ops)](#praktisches-beispiel-bitnamimysql-devops)
+     * [Wichtige Befehle](#wichtige-befehle)
 
   1. Kubernetes Rechteverwaltung (RBAC) 
      * Warum ? (Ops)
@@ -71,11 +72,16 @@
      * [Long Installation step-by-step - Digitalocean](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes)
      * Container Level Monitoring (Devs/Ops)
      * [Setting up metrics-server - microk8s](#setting-up-metrics-server---microk8s)
-     * Prometheus/cAdvisor (Devs/Ops)
+     * [Installation prometheus auf DigitalOcean Kubernetes mit helm](#installation-prometheus-auf-digitalocean-kubernetes-mit-helm)
+     * [Prometheus/cAdvisor (Devs/Ops) - Überblick](#prometheuscadvisor-devsops---überblick)
      * InfluxDB (Ops) 
   
   1. Kubernetes Security 
      * [Grundlagen und Beispiel (Praktisch)](#grundlagen-und-beispiel-praktisch)
+     
+  1. Kustomize 
+     * [Kustomize Overlay Beispiel](#kustomize-overlay-beispiel)
+     * [Helm mit kustomize verheiraten](#helm-mit-kustomize-verheiraten)
 
   1. Kubernetes CI/CD (Optional) 
      * Canary Deployment (Devs/Ops) 
@@ -86,6 +92,9 @@
      * [bash-completion](#bash-completion)
      * [kubectl spickzettel](#kubectl-spickzettel)
      * [Alte manifests migrieren](#alte-manifests-migrieren)
+     * [Pod - Verbindung debuggen](#pod---verbindung-debuggen)
+     * [Übung mit sealed-secrets](#übung-mit-sealed-secrets)
+     * [Config für nginx mit configmap einhängen](#config-für-nginx-mit-configmap-einhängen)
     
   1. Fragen 
      * [Q and A](#q-and-a)
@@ -176,8 +185,10 @@ Container virtualisieren Betriebssystem
 
 ### Einfaches Beispiel eines Dockerfiles
 
+```
 FROM nginx:latest
 COPY html /usr/share/nginx/html
+```
 
 ### Komplexeres Beispiel eines Dockerfiles 
 
@@ -205,7 +216,7 @@ COPY html /usr/share/nginx/html
 ### Wozu dient Kubernetes 
 
   * Orchestrierung von Containern
-  * am gebräuchlisten aktuell Docker
+  * am gebräuchlichsten aktuell Docker
 
 ### Die Struktur von Kubernetes mit seinen Komponenten (Devs/Ops)
 
@@ -319,9 +330,9 @@ Er stellt sicher, dass Container in einem Pod ausgeführt werden.
     * Kubernetes aware backup (solution), e.g. kasten.io 
   * Havarie (wie setze ich das ganze wieder auf - worst case)   
 
-### Wo muss mich strecken als Admin 
+### Wo muss ich mich strecken als Admin 
 
-  * Aufbau von Vertrauen auf Kubernetes (Vertrauen darauf, dass Kubernetes das in meinem Sinne macht)
+  * Aufbau von Vertrauen in Kubernetes (Vertrauen darauf, dass Kubernetes das in meinem Sinne macht)
 
 ### Sicherheitsaspekt (Server vs. Kubernetes) 
 
@@ -445,16 +456,41 @@ Leichtere Updates von Microservices, weil sie nur einen kleinere Funktionalität
     * Dieses Features, die im Hintergrund manifeste ausführen, können so einfach konfiguriert werden 
   * Es läßt sich sehr einfach ein Cluster aufbauen (3 Server hochziehen mit microk8s und verheiraten (node2, node3) 
 
-### Rancher 
+### Rancher / Rancher Desktop
 
-  * Von der 3 Varianten das komfortabelste Tool
+  * Von den 3 Varianten das komfortabelste Tool
   * Bietet einen gui um ein Cluster einzurichten 
 
 
 ## Kubernetes Praxis API-Objekte 
 
-### Das Tool kubectl (Devs/Ops)
+### Das Tool kubectl (Devs/Ops) - Spickzettel
 
+
+### Per Default mit namespace namespace1 arbeiten 
+
+```
+## namespace muss vorhanden sein, evtl anlegen 
+kubectl create ns namespace1 
+kubectl config set-context --current --namespace=namespace1
+```
+
+### Hilfe zu einem bestimmten Befehl 
+
+```
+## z.B. Hilfe zu config 
+kubectl help config 
+
+```
+
+### Hilfe zu Objekten 
+
+```
+## Hilfe zu object und eigenschaften bekommen
+kubectl explain pod 
+kubectl explain pod.metadata
+kubectl explain pod.metadata.name 
+```
 
 ### Allgemein 
 
@@ -465,11 +501,8 @@ kubectl cluster-info
 ## Welche api-resources gibt es ?
 kubectl api-resources 
 kubectl api-resources | grep namespaces 
-
-## Hilfe zu object und eigenschaften bekommen
-kubectl explain pod 
-kubectl explain pod.metadata
-kubectl explain pod.metadata.name 
+## Gross- und Kleinschreibung egal 
+kubectl api-resources | grep -i ingress
 
 ```
 
@@ -548,8 +581,15 @@ kubectl describe pod nginx
 ## Pod löschen 
 kubectl delete pod nginx 
 
+
+### In den Container / Pod reingehen 
+
+```
+
 ## Kommando in pod ausführen 
 kubectl exec -it nginx -- bash 
+## bei deployment hineinwechseln in einen beliebigen pod 
+kubectl exec -it deploy/nginx-deployment -- bash 
 
 ```
 
@@ -623,7 +663,7 @@ kubectl run foo2 --image=foo2
 kubectl get pods 
 ## Weitere status - info 
 kubectl describe pods foo2 
-
+```
 
 ### Ref:
 
@@ -635,6 +675,8 @@ kubectl describe pods foo2
 ### Walkthrough 
 
 ```
+## cd; mkdir manifests; cd manifests 
+## mkdir web; cd web; 
 ## vi nginx-static.yml 
 
 apiVersion: v1
@@ -653,6 +695,9 @@ spec:
 ```
 kubectl apply -f nginx-static.yml 
 kubectl describe pod nginx-static-web 
+```
+
+```
 ## show config 
 kubectl get pod/nginx-static-web -o yaml
 kubectl get pod/nginx-static-web -o wide 
@@ -662,6 +707,8 @@ kubectl get pod/nginx-static-web -o wide
 
 
 ```
+## cd; mkdir -p manifests/rs; cd manifests/rs
+## nano 01-rs.yml 
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -673,7 +720,7 @@ spec:
       tier: frontend
   template:
     metadata:
-      name: nginx-replica-set
+      name: nginx-pods
       labels:
         tier: frontend
     spec:
@@ -682,35 +729,22 @@ spec:
           image: "nginx:latest"
           ports:
              - containerPort: 80
-             
-kind: ReplicaSet
-metadata:
-  name: nginx-replica-set
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      tier: frontend
-  template:
-    metadata:
-      name: nginx-replica-set
-      labels:
-        tier: frontend
-    spec:
-      containers:
-        - name: nginx
-          image: "nginx:latest"
-          ports:
-             - containerPort: 80
-             
- ```
+            
+```
+
+```
+kubectl apply -f .
+kubectl get rs -o wide
+kubectl get po -o wide 
+```
 
 ### kubectl/manifest/deployments
 
 
 ```
 
-## vi nginx-deployment.yml 
+## cd; mkdir -p manifests/deploy; cd manifests/deploy
+## nano nginx-deployment.yml 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -735,12 +769,15 @@ spec:
 
 ```
 kubectl apply -f nginx-deployment.yml 
+kubectl get deploy; kubectl get rs; kubectl get po
 ```
 
 ### kubectl/manifest/service
 
 
 ```
+## cd; mkdir -p manifests/service; cd manifests/service 
+## nano 01-nginx.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -768,22 +805,63 @@ metadata:
   labels:
     run: svc-my-nginx
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 80
     protocol: TCP
   selector:
-    run: my-nginx
-        
-        
-
-        
-        
+    run: my-nginx               
 ```        
+
+```
+kubectl apply -f . 
+kubectl get deploy; kubectl get po -o wide; kubectl get service -o wide 
+```
+
 
 ### Ref.
 
   * https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/
+
+### IngressController (Devs/Ops)
+
+
+### Basics 
+
+  * Das Verfahren funktioniert auch so auf anderen Plattformen, wenn helm verwendet wird und noch kein IngressController vorhanden
+  * Ist kein IngressController vorhanden, werden die Ingress-Objekte zwar angelegt, es funktioniert aber nicht. 
+
+### Prerequisites 
+
+  * kubectl muss eingerichtet sein und Verbindung zum Cluster haben (kubectl cluster-info) 
+
+### Walkthrough (Setup Ingress Controller) 
+
+```
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm show values ingress-nginx/ingress-nginx
+
+## It will be setup with type loadbalancer - so waiting to retrieve an ip from the external loadbalancer
+## This will take a little. 
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress --create-namespace --set controller.publishService.enabled=true 
+
+## See when the external ip comes available
+kubectl -n ingress get all
+kubectl --namespace ingress get services -o wide -w nginx-ingress-ingress-nginx-controller
+```
+
+```
+## Output  
+NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE     SELECTOR
+nginx-ingress-ingress-nginx-controller   LoadBalancer   10.245.78.34   157.245.20.222   80:31588/TCP,443:30704/TCP   4m39s   app.kubernetes.io/component=controller,app.kubernetes.io/instance=nginx-ingress,app.kubernetes.io/name=ingress-nginx
+
+
+
+## Now setup wildcard - domain for training purpose 
+*.lab3.t3isp.de A 188.166.195.238
+```
+
 
 ### Hintergrund Ingress
 
@@ -811,8 +889,7 @@ microk8s enable ingress
 ### Walkthrough 
 
 ```
-## mkdir apple-banana-ingress
-## cd apple-banana-ingress
+## cd; mkdir -p manifests/abc; cd manifests/abc
 
 ## apple.yml 
 ## vi apple.yml 
@@ -827,7 +904,7 @@ spec:
     - name: apple-app
       image: hashicorp/http-echo
       args:
-        - "-text=apple-tln12"
+        - "-text=apple-tln<tln>"
 ---
 
 kind: Service
@@ -861,7 +938,7 @@ spec:
     - name: banana-app
       image: hashicorp/http-echo
       args:
-        - "-text=banana-tln12"
+        - "-text=banana-tln<tln>"
 
 ---
 
@@ -890,8 +967,9 @@ metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: "app12.lab.t3isp.de"
+  - host: "app<tln>.lab3.t3isp.de"
     http:
       paths:
         - path: /apple
@@ -940,8 +1018,9 @@ metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: "app12.lab.t3isp.de"
+  - host: "app<tln>.lab3.t3isp.de"
     http:
       paths:
         - path: /apple
@@ -1017,7 +1096,7 @@ spec:
 ### Praxis. Beispiel (Dev/Ops)
 
 
-### Create new server and install nfs-server
+### Create new server and install nfs-server (if not existent)
 
 ```
 ## on Ubuntu 20.04LTS
@@ -1036,7 +1115,7 @@ vi /etc/exports
 exportfs -av 
 ```
 
-### On all clients 
+### On all clients (only on self-hosted kubernetes)
 
 ```
 #### Please do this on all servers 
@@ -1053,16 +1132,16 @@ umount /mnt/nfs
 ### Setup PersistentVolume and PersistentVolumeClaim in cluster
 
 ```
-## mkdir -p nfs; cd nfs
+## cd; mkdir -p manifests/nfs; cd manifests/nfs
 ## vi 01-pv.yml 
 ## Important user  
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   # any PV name
-  name: pv-nfs-tln1
+  name: pv-nfs-tln<tln>
   labels:
-    volume: nfs-data-volume-tln1
+    volume: nfs-data-volume-tln<tln>
 spec:
   capacity:
     # storage size
@@ -1075,8 +1154,8 @@ spec:
     Retain
   nfs:
     # NFS server's definition
-    path: /var/nfs/tln1/nginx
-    server: 192.168.56.106
+    path: /var/nfs/tln<tln>/nginx
+    server: 10.135.0.5
     readOnly: false
   storageClassName: ""
 
@@ -1092,10 +1171,10 @@ kubectl apply -f 01-pv.yml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pv-nfs-claim-tln1
+  name: pv-nfs-claim-tln<tln>
 spec:
   storageClassName: ""
-  volumeName: pv-nfs-tln1
+  volumeName: pv-nfs-tln<tln>
   accessModes:
   - ReadWriteMany
   resources:
@@ -1139,7 +1218,7 @@ spec:
       volumes:
       - name: nfsvol
         persistentVolumeClaim:
-          claimName: pv-nfs-claim-tln1
+          claimName: pv-nfs-claim-tln<tln>
 
 
 ```
@@ -1170,13 +1249,17 @@ spec:
 
 ```
 kubectl apply -f 04-service.yml 
+```
 
+```
 ## connect to the container and add index.html - data 
 kubectl exec -it deploy/nginx-deployment -- bash 
 ## in container
 echo "hello dear friend" > /usr/share/nginx/html/index.html 
 exit 
+```
 
+```
 ## now try to connect 
 kubectl get svc 
 
@@ -1219,7 +1302,8 @@ curl http://<cluster-ip>:<port> # port -> > 30000
 
   * Flanel
   * Canal 
-  * Calico 
+  * Calico
+  * Cilium 
   
 ### Flannel
 
@@ -1231,7 +1315,7 @@ curl http://<cluster-ip>:<port> # port -> > 30000
 #### Vorteile 
 
   * Guter einfacher Einstieg 
-  * redziert auf eine Binary flanneld 
+  * reduziert auf eine Binary flanneld 
 
 #### Nachteile 
 
@@ -1285,7 +1369,7 @@ kubectl create ns policy-demo<tln>
 kubectl create deployment --namespace=policy-demo<tln> nginx --image=nginx
 kubectl expose --namespace=policy-demo<tln> deployment nginx --port=80
 ## lassen einen 2. pod laufen mit dem auf den nginx zugreifen 
-kubectl run --namespace=policy-demo<tln> access --rm -ti --image busybox /bin/sh
+kubectl run --namespace=policy-demo<tln> access --rm -ti --image busybox -- sh
 ```
 ```
 ## innerhalb der shell 
@@ -1296,12 +1380,12 @@ wget -q nginx -O -
 ```
 ## Schritt 2: Policy festlegen, dass kein Ingress-Traffic erlaubt
 ## in diesem namespace: policy-demo 
-## mkdir network; cd network 
+## cd; mkdir -p manifests/network; cd manifests/network 
 ## vi 01-policy.yml
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: default-deny
+  name: a-simple-policy
   namespace: policy-demo-<tln>
 spec:
   podSelector:
@@ -1351,7 +1435,7 @@ kubectl apply -f 02-allow.yml
 ```
 ## lassen einen 2. pod laufen mit dem auf den nginx zugreifen 
 ## pod hat durch run -> access automatisch das label run:access zugewiesen 
-kubectl run --namespace=policy-demo<tln> access --rm -ti --image busybox /bin/sh
+kubectl run --namespace=policy-demo-<tln> access --rm -ti --image busybox /bin/sh
 ```
 
 ```
@@ -1370,7 +1454,7 @@ wget -q nginx -O -
 
 ```
 
-kubectl delete ns policy-demo 
+kubectl delete ns policy-demo-<tln> 
 
 ```
 
@@ -1387,8 +1471,45 @@ kubectl delete ns policy-demo
 ```
 Ein Paket für alle Komponenten
 Einfaches Installieren und Updaten.
-Feststehende Struktur, durch die andere Pakete teilen können 
+Feststehende Struktur, durch die Unternehmen/Personen/Institutionen Pakete teilen können 
 ```
+
+### Grundlagen / Aufbau / Verwendung (Dev/Ops)
+
+
+### Wo ? 
+
+```
+artifacts helm 
+https://artifacthub.io/
+```
+### Komponenten 
+
+```
+Chart - beeinhaltet Beschreibung und Komponenten 
+tar.gz - Format / oder Verzeichnis 
+
+Wenn wir ein Chart ausführen wird eine Release erstellen 
+(parallel: image -> container, analog: chart -> release 
+```
+
+### Installation 
+
+```
+## Beispiel ubuntu 
+## snap install --classic helm
+
+## Cluster muss vorhanden, aber nicht notwendig wo helm installiert 
+
+## Voraussetzung auf dem Client-Rechner (helm ist nichts als anderes als ein Client-Programm) 
+Ein lauffähiges kubectl auf dem lokalen System (welches sich mit dem Cluster verbinden.
+-> saubere -> .kube/config 
+
+## Test
+kubectl cluster-info 
+
+```
+
 
 ### Praktisches Beispiel bitnami/mysql (Dev/Ops)
 
@@ -1401,6 +1522,17 @@ Feststehende Struktur, durch die andere Pakete teilen können
     * this installs helm3
   * Please only use: helm3. No server-side comoponents needed (in cluster) 
     * Get away from examples using helm2 (hint: helm init) - uses tiller  
+
+### Example 1 (runterladen):
+
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami 
+helm search repo bitnami
+helm repo update 
+helm pull bitnami/mysql
+tar xzvf mysql-*.tgz 
+
+```
 
 ### Example 1: We will setup mysql without persistent storage (not helpful in production ;o() 
 
@@ -1432,6 +1564,48 @@ helm install my-mysql --set primary.persistence.enabled=false bitnami/mysql
   * https://github.com/bitnami/charts/tree/master/bitnami/mysql/#installing-the-chart
   * https://helm.sh/docs/intro/quickstart/
 
+### Wichtige Befehle
+
+
+```
+## Repos
+helm repo add gitlab http://charts.gitlab.io 
+helm repo list 
+helm repo remove gitlab 
+helm repo update 
+
+## Suchen 
+helm search repo mysql # in allen konfigurierten Repos suchen 
+
+## Chart herunterladen 
+helm repo pull bitnami/mysql 
+
+## Releases anzeigen 
+helm list 
+## history anzeigen 
+helm history my-mysql 
+
+## Release installieren - my-mysql ist hier hier release-name 
+helm install my-mysql bitnami-mysql 
+helm install [name] [chart] --dry-run --debug -f <your_values_file> # dry run 
+helm uninstall my-mysql 
+## + verwendete values anzeigen 
+helm get values 
+
+## upgrade, wenn vorhanden, ansonsten install 
+helm upgrade --install my-mysql bitnami/mysql 
+
+## Nur template parsen - ohne an den kube-api-server zu schicken  
+helm template my-mysql bitnami/mysql > test.yml 
+## template und hilfeseite aufgaben und vorher alles an den kube-api-server 
+## zur Validierung schicken
+helm install --dry-run my-mysql bitnami/mysql 
+
+helm show values bitnami-mysql
+helm get values my-mysql
+
+```
+
 ## Kubernetes Rechteverwaltung (RBAC) 
 
 ### Praktische Umsetzung anhand eines Beispiels (Ops)
@@ -1460,9 +1634,7 @@ usw. ;o)
 ### Schritt 1: Nutzer-Account auf Server anlegen / in Client 
 
 ```
-cd 
-mkdir -p manifests/rbac
-cd manifests/rbac
+cd; mkdir -p manifests/rbac; cd manifests/rbac
 ```
 
 ####  Mini-Schritt 1: Definition für Nutzer 
@@ -1681,6 +1853,220 @@ kubectl top pods
   * https://kubernetes-sigs.github.io/metrics-server/
   * kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
+### Installation prometheus auf DigitalOcean Kubernetes mit helm
+
+
+### Set the custom-values 
+
+```
+## There are some restrictions on the digitalocean kubernetes cluster
+## and we need to take these into account 
+```
+
+```
+## cd; mkdir manifests/helm-prometheus; cd manifests/helm-prometheus
+## vi values.yml
+## Define persistent storage for Prometheus (PVC)
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: do-block-storage
+          resources:
+            requests:
+              storage: 5Gi
+
+## Define persistent storage for Grafana (PVC)
+grafana:
+  # Set password for Grafana admin user
+  adminPassword: your_admin_password
+  persistence:
+    enabled: true
+    storageClassName: do-block-storage
+    accessModes: ["ReadWriteOnce"]
+    size: 5Gi
+
+## Define persistent storage for Alertmanager (PVC)
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: do-block-storage
+          resources:
+            requests:
+              storage: 5Gi
+
+## Change default node-exporter port
+prometheus-node-exporter:
+  service:
+    port: 30206
+    targetPort: 30206
+
+## Disable Etcd metrics
+kubeEtcd:
+  enabled: false
+
+## Disable Controller metrics
+kubeControllerManager:
+  enabled: false
+
+## Disable Scheduler metrics
+kubeScheduler:
+  enabled: false
+
+```
+
+```
+## setup helm repo
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+```
+
+```
+## install helm chart 
+## Unfortunately this does not work with digitalocean managed kubernetes (doks) - 1.22.
+## helm install --namespace monitoring --create-namespace -f values.yml prometheus  prometheus-community/kube-prometheus-stack
+## Error with EOF 
+
+## But you can do this 
+helm template --namespace monitoring --create-namespace -f values.yml prometheus  prometheus-community/kube-prometheus-stack > all.yml
+kubectl apply -f all.yml 
+
+
+## now check, if everything is up and running // takes a couple of minutes  
+kubectl -n monitoring get all 
+
+```
+
+### Access Prometheus 
+
+```
+## What Service is it ? 
+kubectl -n monitoring get svc prometheus-kube-prometheus-prometheus 
+
+## Prometheus: (Version kubectl on your client) 
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
+
+## in our case kubectl is on remote client, so we need open a tunnel 
+## Session 1:
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
+
+## Session 2:
+## Service Listens on 8000
+ssh -L 9090:localhost:9090 tln<tln>@<ip-client>
+
+## in browser
+http://localhost:9090
+
+
+```
+
+### Let us look into prometheus 
+
+
+
+
+
+### Access Grafana 
+
+```
+
+
+## Grafana: (Version kubectl on your client) 
+kubectl port-forward -n monitoring svc/prometheus-grafana 8000:80
+
+## in our case kubectl is on remote client, so we need open a tunnel 
+## Session 1:
+kubectl port-forward -n monitoring svc/prometheus-grafana 8000:80
+
+## Session 2:
+## Service Listens on 8000
+ssh -L 8000:localhost:8000 tln<tln>@<ip-client>
+
+## In browser:
+http://localhost:8000
+user: admin
+pass: <from-values-files-above>
+
+```
+
+```
+## Alternative Quick hack, change service to nodeport 
+kubectl -n monitoring get svc/prometheus-grafana -o yaml > 01-svc-grafana.yml
+## change type -> to -> NodePort 
+kubectl apply -f 01-svc-grafana.yml 
+kubectl -n monitoring get svc/prometheus-grafana
+
+## IP of one Node 
+http://68.183.216.6:30220/
+
+```
+
+
+
+
+
+
+
+### Reference
+
+  * A bit outdated, be cause the name of the chart has changed
+    * https://www.digitalocean.com/community/tutorials/how-to-set-up-digitalocean-kubernetes-cluster-monitoring-with-helm-and-prometheus-operator
+
+### Prometheus/cAdvisor (Devs/Ops) - Überblick
+
+
+### What does it do ?
+
+  * It monitors your system by collecting data
+  * Data is pulled from your system by defined endpoints (http) from your cluster 
+  * To provide data on your system, a lot of exporters are available, that
+    * collect the data and provide it in Prometheus
+
+### Technical 
+
+  * Prometheus has a TDB (Time Series Database) and is good as storing time series with data
+  * Prometheus includes a local on-disk time series database, but also optionally integrates with remote storage systems.
+  * Prometheus's local time series database stores data in a custom, highly efficient format on local storage.
+  * Ref: https://prometheus.io/docs/prometheus/latest/storage/
+
+### What are time series ? 
+
+  * A time series is a sequence of data points that occur in successive order over some period of time. 
+  * Beispiel: 
+    * Du willst die täglichen Schlusspreise für eine Aktie für ein Jahr dokumentieren
+    * Damit willst Du weitere Analysen machen 
+    * Du würdest das Paar Datum/Preis dann in der Datumsreihenfolge sortieren und so ausgeben
+    * Dies wäre eine "time series" 
+
+### Kompenenten von Prometheus 
+
+![Prometheus Schaubild](https://www.devopsschool.com/blog/wp-content/uploads/2021/01/What-is-Prometheus-Architecutre-components1-740x414.png)
+
+Quelle: https://www.devopsschool.com/
+
+#### Prometheus Server 
+
+1. Retrieval (Sammeln) 
+   * Data Retrieval Worker 
+     * pull metrics data
+1. Storage 
+   * Time Series Database (TDB)
+     * stores metrics data
+1. HTTP Server 
+   * Accepts PromQL - Queries (e.g. from Grafana)
+     * accept queries 
+  
+### Grafana ? 
+
+  * Grafana wird meist verwendet um die grafische Auswertung zu machen.
+  * Mit Grafana kann ich einfach Dashboards verwenden 
+  * Ich kann sehr leicht festlegen (Durch Data Sources), wo meine Daten herkommen
+
 ## Kubernetes Security 
 
 ### Grundlagen und Beispiel (Praktisch)
@@ -1842,6 +2228,233 @@ kubectl apply -f 03_pod-bitnami.yml
 kubectl -n test-ns<tln> get pods
 ```
 
+## Kustomize 
+
+### Kustomize Overlay Beispiel
+
+
+### Konzept Overlay 
+
+  * Base + Overlay = Gepatchtes manifest 
+  * Sachen patchen.
+  * Die werden drübergelegt. 
+
+### Example 1: Walkthrough 
+
+```
+## Step 1:
+## Create the structure 
+## kustomize-example1
+## L base 
+## | - kustomization.yml 
+## L overlays 
+##.    L dev
+##       - kustomization.yml 
+##.    L prod 
+##.      - kustomization.yml 
+cd; mkdir -p manifests/kustomize-example1/base; mkdir -p manifests/kustomize-example1/overlays/prod; cd manifests/kustomize-example1 
+
+```
+
+```
+## Step 2: base dir with files 
+## now create the base kustomization file 
+## vi base/kustomization.yml
+resources:
+- service.yml 
+```
+
+```
+## Step 3: Create the service - file 
+## vi base/service.yml 
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-app
+spec:
+  type: ClusterIP
+  selector:
+    app: simple-app
+  ports:
+  - name: http
+    port: 80 
+
+```
+
+```
+## See how it looks like 
+kubectl kustomize ./base
+
+```
+
+```
+## Step 4: create the customization file accordingly 
+##vi overlays/prod/kustomization.yaml
+bases:
+- ../../base
+patches:
+- service-ports.yaml
+```
+
+```
+## Step 5: create overlay (patch files) 
+## vi overlays/prod/service-ports.yaml 
+kind: Service
+apiVersion: v1
+metadata:
+  #Name der zu patchenden Ressource
+  name: service-app 
+spec:
+  # Changed to Nodeport
+  type: NodePort
+  ports: #Die Porteinstellungen werden überschrieben
+  - name: https
+    port: 443 
+
+```
+
+
+```
+## Step 6:
+kubectl kustomize overlays/prod
+
+## or apply it directly 
+kubectl apply -k overlays/prod/
+
+```
+
+```
+## Step 7:
+## mkdir -p overlays/dev
+## vi overlays/dev/kustomization 
+bases:
+- ../../base
+
+```
+
+```
+## Step 8: 
+## statt mit der base zu arbeiten
+kubectl kustomize overlays/dev 
+```
+
+### Example 2: Advanced Patching with patchesJson6902 (You need to have done example 1 firstly) 
+
+```
+## Schritt 1:
+## Replace overlays/prod/kustomization.yml with the following syntax 
+bases:
+- ../../base
+patchesJson6902:
+- target:
+    version: v1
+    kind: Service
+    name: service-app
+  path: service-patch.yaml 
+```
+
+```
+## Schritt 2:
+## vi overlays/prod/service-patch.yaml 
+- op: remove
+  path: /spec/ports
+  value: 
+  - name: http
+    port: 80
+- op: add                                                                                                                                   
+  path: /spec/ports
+  value: 
+  - name: https
+    port: 443
+```
+
+```
+## Schritt 3:
+kubectl kustomize overlays/prod 
+
+```
+
+
+### Special Use Case: Change the metadata.name 
+
+```
+## Same as Example 2, but patch-file is a bit different 
+## vi overlays/prod/service-patch.yaml 
+- op: remove          
+  path: /spec/ports
+  value:              
+  - name: http        
+    port: 80          
+                      
+- op: add             
+  path: /spec/ports                                                                                                                         
+  value:              
+  - name: https       
+    port: 443         
+                      
+- op: replace         
+  path: /metadata/name
+  value: svc-app-test
+
+```
+
+```
+kubectl kustomize overlays/prod 
+```
+
+### Ref:
+
+  * https://blog.ordix.de/kubernetes-anwendungen-mit-kustomize
+
+
+
+
+### Helm mit kustomize verheiraten
+
+
+### Option 1: helm chart entpacken und das helm chart patchen 
+
+```
+helm add repo bitnami .... 
+helm template --base-directory=base bitnami/mysql
+## patchen kustomize 
+kustomize build overlay/prod 
+kubectl apply -k overlay/prod 
+```
+
+### Option 2: packe helm chart aus 
+
+```
+## pull 
+helm pull 
+tar xvf mysql-9.0.34.tgz 
+## templates werden 
+kubectl kustomize build overlay/prod
+helm install mysql-release mysql # 2. mysql wäre das chart-verzeichnis lokal im filesystem 
+## Vorteile 
+## ich kann das ganze auch wieder so installieren
+## ich kann ein update durch führen 
+```
+
+### Option 3: helm --post-renderer 
+
+```
+## erst wird template erstellt und dann dann ein weiteres script ausgeführt 
+## und dann erst installiert. 
+helm install --post-renderer=./patch.sh 
+
+## im shell-script
+## kubectl kustomize 
+## https://austindewey.com/2020/07/27/patch-any-helm-chart-template-using-a-kustomize-post-renderer/
+```
+
+### Option 4: kustomize lädt helm - chart 
+
+```
+## kustomization.yml 
+https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md
+```
+
 ## Kubernetes CI/CD (Optional) 
 
 ## Tipps & Tricks 
@@ -1882,6 +2495,31 @@ complete -F __start_kubectl k
 ### kubectl spickzettel
 
 
+### Per Default mit namespace namespace1 arbeiten 
+
+```
+## namespace muss vorhanden sein, evtl anlegen 
+kubectl create ns namespace1 
+kubectl config set-context --current --namespace=namespace1
+```
+
+### Hilfe zu einem bestimmten Befehl 
+
+```
+## z.B. Hilfe zu config 
+kubectl help config 
+
+```
+
+### Hilfe zu Objekten 
+
+```
+## Hilfe zu object und eigenschaften bekommen
+kubectl explain pod 
+kubectl explain pod.metadata
+kubectl explain pod.metadata.name 
+```
+
 ### Allgemein 
 
 ```
@@ -1891,11 +2529,8 @@ kubectl cluster-info
 ## Welche api-resources gibt es ?
 kubectl api-resources 
 kubectl api-resources | grep namespaces 
-
-## Hilfe zu object und eigenschaften bekommen
-kubectl explain pod 
-kubectl explain pod.metadata
-kubectl explain pod.metadata.name 
+## Gross- und Kleinschreibung egal 
+kubectl api-resources | grep -i ingress
 
 ```
 
@@ -1974,8 +2609,15 @@ kubectl describe pod nginx
 ## Pod löschen 
 kubectl delete pod nginx 
 
+
+### In den Container / Pod reingehen 
+
+```
+
 ## Kommando in pod ausführen 
 kubectl exec -it nginx -- bash 
+## bei deployment hineinwechseln in einen beliebigen pod 
+kubectl exec -it deploy/nginx-deployment -- bash 
 
 ```
 
@@ -2055,6 +2697,182 @@ kubectl convert --help
 
   * https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin 
 
+### Pod - Verbindung debuggen
+
+
+```
+## Rahmenbedingungen.
+## Gemanaged'er Kubectl - Cluster und ich kann nicht per ssh zugreifen 
+## Lösung - busybox starten und damit Verbindungen testen.
+kubectl run --rm -it busybux --image busybox -- sh 
+
+## Jetzt kann ich mich so verhalten als wäre ich im Cluster 
+## z.B. 
+## ping <andere-pod-ip>
+```
+
+### Übung mit sealed-secrets
+
+
+### 2 Komponenten 
+
+ * Sealed Secrets besteht aus 2 Teilen 
+   * kubeseal, um z.B. die Passwörter zu verschlüsseln 
+   * Dem Operator (ein Controller), der das Entschlüsseln übernimmt  
+
+### Schritt 1: Walkthrough - Client Installation (als root)
+
+```
+## Binary für Linux runterladen, entpacken und installieren 
+## Achtung: Immer die neueste Version von den Releases nehmen, siehe unten:
+## Install as root 
+cd /usr/src 
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/kubeseal-0.17.5-linux-amd64.tar.gz
+tar xzvf kubeseal-0.17.5-linux-amd64.tar.gz 
+install -m 755 kubeseal /usr/local/bin/kubeseal
+
+```
+
+### Schritt 2: Walkthrough - Server Installation mit kubectl client 
+
+```
+## auf dem Client 
+## cd 
+## mkdir manifests/seal-controller/ #
+## cd manifests/seal-controller
+## Neueste Version 
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/controller.yaml
+kubectl apply -f controller.yaml 
+```
+
+### Schritt 3: Walkthrough - Verwendung (als normaler/unpriviligierter Nutzer)
+
+```
+kubeseal --fetch-cert 
+
+## Secret - config erstellen mit dry-run, wird nicht auf Server angewendet (nicht an Kube-Api-Server geschickt) 
+kubectl create secret generic basic-auth --from-literal=APP_USER=admin --from-literal=APP_PASS=change-me --dry-run=client -o yaml > basic-auth.yaml
+cat basic-auth.yaml 
+
+## öffentlichen Schlüssel zum Signieren holen 
+kubeseal --fetch-cert > pub-sealed-secrets.pem
+cat pub-sealed-secrets.pem 
+
+kubeseal --format=yaml --cert=pub-sealed-secrets.pem < basic-auth.yaml > basic-auth-sealed.yaml
+cat basic-auth-sealed.yaml 
+
+## Ausgangsfile von dry-run löschen 
+rm basic-auth.yaml
+
+## Ist das secret basic-auth vorher da ? 
+kubectl get secrets basic-auth 
+
+kubectl apply -f basic-auth-sealed.yaml
+
+## Kurz danach erstellt der Controller aus dem sealed secret das secret 
+kubectl get secret 
+kubectl get secret -o yaml
+
+```
+
+```
+## Ich kann dieses jetzt ganz normal in meinem pod verwenden.
+## Step 3: setup another pod to use it in addition 
+## vi 02-secret-app.yml 
+apiVersion: v1    
+kind: Pod    
+metadata:    
+  name: secret-app    
+spec:    
+  containers:    
+    - name: env-ref-demo    
+      image: nginx    
+      envFrom:                                                                                                                              
+      - secretRef:
+          name: basic-auth
+
+
+```
+
+### Hinweis: Ubuntu snaps 
+
+```
+Installation über snap funktioniert nur, wenn ich auf meinem Client
+ausschliesslich als root arbeite 
+```
+
+### Wie kann man sicherstellen, dass nach der automatischen Änderung des Secretes, der Pod bzw. Deployment neu gestartet wird ?
+
+  * https://github.com/stakater/Reloader
+ 
+### Ref: 
+  
+  * Controller: https://github.com/bitnami-labs/sealed-secrets/releases/
+
+
+
+### Config für nginx mit configmap einhängen
+
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |
+    # jochens personal config map 
+    user nginx;
+    worker_processes  1;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+        listen       80;
+        server_name  localhost;
+        location / {
+          root /usr/share/nginx/html;
+        }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+            - name: nginx-conf-vol
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+      volumes:
+      - name: nginx-conf-vol
+        configMap:
+          name: nginx-conf
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+
+
+
+```
+
 ## Fragen 
 
 ### Q and A
@@ -2084,6 +2902,38 @@ Labels can be used to select objects and to find collections of objects that sat
   * https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
   * https://kubernetes.io/docs/reference/labels-annotations-taints/
 
+### Wie kann ich die Default Class für Ingress bzw. IngressClass setzten 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+  name: nginx-example
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/ingress-nginx
+```
+
+### Wie kann ich bei docker einloggen mit kubernetes bzw. ...
+
+```
+## einen pod von einem image aus einer registry mit credentials ziehen.
+## klassische / unsichere Lösung / weil credentials in manifest gespeichert werden (unverschlüsselt) 
+https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+```
+
+### Sind Änderungen in einer eingehängt config-map sofort im pod sichtbar ? 
+
+```
+Nein 
+```
+
+```
+Lösung als Workaround: https://github.com/stakater/Reloader
+```
 
 ## Kubernetes - microk8s (Installation und Management) 
 
@@ -2192,7 +3042,8 @@ LoadBalancer - an external balancer is used (that is mainly the case in
 
   * Flanel
   * Canal 
-  * Calico 
+  * Calico
+  * Cilium 
   
 ### Flannel
 
@@ -2204,7 +3055,7 @@ LoadBalancer - an external balancer is used (that is mainly the case in
 #### Vorteile 
 
   * Guter einfacher Einstieg 
-  * redziert auf eine Binary flanneld 
+  * reduziert auf eine Binary flanneld 
 
 #### Nachteile 
 
