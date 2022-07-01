@@ -80,7 +80,8 @@
      * [Grundlagen und Beispiel (Praktisch)](security/grundlagen-security.md)
      
   1. Kustomize 
-     * [Kustomize Overlay Beispiel](kustomize/02-overlay-example.md)
+     * [Kustomize Overlay Beispiel](/kustomize/02-overlay-example.md)
+     * [Helm mit kustomize verheiraten](/kustomize/helm-kustomize-options.md)
 
   1. Kubernetes CI/CD (Optional) 
      * Canary Deployment (Devs/Ops) 
