@@ -78,6 +78,9 @@
   
   1. Kubernetes Security 
      * [Grundlagen und Beispiel (Praktisch)](security/grundlagen-security.md)
+     
+  1. Kustomize 
+     * [Kustomize Overlay Beispiel](kustomize/02-overlay-example.md)
 
   1. Kubernetes CI/CD (Optional) 
      * Canary Deployment (Devs/Ops) 
