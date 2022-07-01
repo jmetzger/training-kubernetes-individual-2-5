@@ -72,9 +72,16 @@ helm repo update
 
 ```
 # install helm chart 
-helm install --namespace monitoring --create-namespace -f values.yml prometheus  prometheus-community/kube-prometheus-stack
+# Unfortunately this does not work with digitalocean managed kubernetes (doks) - 1.22.
+# helm install --namespace monitoring --create-namespace -f values.yml prometheus  prometheus-community/kube-prometheus-stack
+# Error with EOF 
 
-# now check, if everything is up and running // takes a little  
+# But you can do this 
+helm template --namespace monitoring --create-namespace -f values.yml prometheus  prometheus-community/kube-prometheus-stack > all.yml
+kubectl apply -f all.yml 
+
+
+# now check, if everything is up and running // takes a couple of minutes  
 kubectl -n monitoring get all 
 
 ```
@@ -86,14 +93,34 @@ kubectl -n monitoring get all
 
 # in our case kubectl is on remote client, so we need open a tunnel 
 # Session 1:
+kubectl port-forward -n monitoring svc/prometheus-grafana 8000:80
 
 # Session 2:
-ssh -L 3000:localhost:3000 tln<tln>@<ip-client>
+# Service Listens on 8000
+ssh -L 8000:localhost:8000 tln<tln>@<ip-client>
 
 # In browser:
-http://localhost:
+http://localhost:8000
+user: admin
+pass: <from-values-files-above>
 
 ```
+
+```
+# Alternative Quick hack, change service to nodeport 
+kubectl -n monitoring get svc/prometheus-grafana -o yaml > 01-svc-grafana.yml
+# change type -> to -> NodePort 
+kubectl apply -f 01-svc-grafana.yml 
+kubectl -n monitoring get svc/prometheus-grafana
+
+# IP of one Node 
+http://68.183.216.6:30220/
+
+```
+
+
+
+
 
 
 
