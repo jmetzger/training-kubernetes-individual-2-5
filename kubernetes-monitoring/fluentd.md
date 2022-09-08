@@ -10,6 +10,7 @@
 # With microk8s you can enable this stack. 
 microk8s enable fluentd 
 
+# fluentd will run as daemonSets to aggregate data
 
 
 
